@@ -1,22 +1,51 @@
-import React from "react"
+import React, { useState } from "react"
 import {
   Container,
   Box,
   Text,
-  Heading,
   Stack,
   Image,
-  Button,
   IconButton,
+  NumberInput,
+  NumberInputField,
+  NumberInputStepper,
+  NumberIncrementStepper,
+  NumberDecrementStepper,
 } from "@chakra-ui/react"
 
-const CarritoProductos = ({ producto, productos, setProductos, id }) => {
+const CarritoProductos = ({
+  producto,
+  productos,
+  setProductos,
+  id,
+  total,
+  setTotal,
+}) => {
+  const [valor, setValor] = useState(1)
   const deleteProducto = () => {
     const newProductos = productos.filter((produc, i) => i !== id)
     setProductos(newProductos)
+    setTotal(total - producto.precio)
   }
   const deleteProducto2 = () => {
     setProductos(undefined)
+    setTotal(0)
+  }
+  const handleChange1 = (value) => {
+    setValor(value)
+    setTotal(total + producto.precio * value)
+    value >= valor
+      ? (productos[id].cantidad = productos[id].cantidad + 1)
+      : (productos[id].cantidad = productos[id].cantidad - 1)
+    setProductos(productos)
+  }
+  const handleChange2 = (value) => {
+    setValor(value)
+    setTotal(productos[0].precio * value)
+    value >= valor
+      ? (productos[0].cantidad = productos[0].cantidad + 1)
+      : (productos[0].cantidad = productos[0].cantidad - 1)
+    setProductos(productos)
   }
   const unico = (
     <Container padding="50" bg="teal" maxW="container.2xl">
@@ -42,7 +71,20 @@ const CarritoProductos = ({ producto, productos, setProductos, id }) => {
           </Box>
           <Box width="30%" borderBottom="1px">
             <Stack direction="row" justifyContent="space-between">
-              <Text>Cantidad</Text>
+              <Box>
+                <NumberInput
+                  size="md"
+                  maxW={24}
+                  defaultValue={1}
+                  onChange={handleChange2}
+                >
+                  <NumberInputField />
+                  <NumberInputStepper>
+                    <NumberIncrementStepper />
+                    <NumberDecrementStepper />
+                  </NumberInputStepper>
+                </NumberInput>
+              </Box>
               <Box>
                 <IconButton
                   onClick={deleteProducto2}
@@ -84,7 +126,20 @@ const CarritoProductos = ({ producto, productos, setProductos, id }) => {
           </Box>
           <Box width="30%" borderBottom="1px">
             <Stack direction="row" justifyContent="space-between">
-              <Text>Cantidad</Text>
+              <Box>
+                <NumberInput
+                  size="md"
+                  maxW={24}
+                  defaultValue={1}
+                  onChange={handleChange1}
+                >
+                  <NumberInputField />
+                  <NumberInputStepper>
+                    <NumberIncrementStepper />
+                    <NumberDecrementStepper />
+                  </NumberInputStepper>
+                </NumberInput>
+              </Box>
               <Box>
                 <IconButton
                   onClick={deleteProducto}
