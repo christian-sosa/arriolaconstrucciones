@@ -10,7 +10,15 @@ import {
 } from "@chakra-ui/react"
 import "../App.css"
 
-const Product = ({ produ, total, setTotal, productos, setProductos }) => {
+const Product = ({
+  produ,
+  total,
+  setTotal,
+  productos,
+  setProductos,
+  cantidad,
+  setCantidad,
+}) => {
   const handleClick = () => {
     setTotal(total + produ.precio)
     var array = []
@@ -24,10 +32,11 @@ const Product = ({ produ, total, setTotal, productos, setProductos }) => {
     productos === undefined
       ? setProductos(array.concat(newProduct))
       : setProductos(productos.concat(newProduct))
+    setCantidad(cantidad + 1)
   }
   return (
     <Box width="100%" display="flex" justifyContent="center" paddingTop="2">
-      <Box width="85%" bg="grey" rounded="lg">
+      <Box width="85%" className="box" rounded="lg">
         <Heading textAlign="center" fontSize="4xl">
           {produ.nombre}
         </Heading>

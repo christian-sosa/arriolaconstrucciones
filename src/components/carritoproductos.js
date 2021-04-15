@@ -20,20 +20,27 @@ const CarritoProductos = ({
   id,
   total,
   setTotal,
+  setCantidad,
+  cantidad,
 }) => {
   const [valor, setValor] = useState(1)
   const deleteProducto = () => {
     const newProductos = productos.filter((produc, i) => i !== id)
     setProductos(newProductos)
     setTotal(total - producto.precio)
+    setCantidad(cantidad - 1)
   }
   const deleteProducto2 = () => {
     setProductos(undefined)
     setTotal(0)
+    setCantidad(cantidad - 1)
   }
   const handleChange1 = (value) => {
     setValor(value)
-    setTotal(total + producto.precio * value)
+    value >= valor
+      ? setTotal(total + producto.precio)
+      : setTotal(total - producto.precio)
+
     value >= valor
       ? (productos[id].cantidad = productos[id].cantidad + 1)
       : (productos[id].cantidad = productos[id].cantidad - 1)
@@ -75,7 +82,8 @@ const CarritoProductos = ({
                 <NumberInput
                   size="md"
                   maxW={24}
-                  defaultValue={1}
+                  min={0}
+                  defaultValue={productos[0].cantidad}
                   onChange={handleChange2}
                 >
                   <NumberInputField />
@@ -130,7 +138,7 @@ const CarritoProductos = ({
                 <NumberInput
                   size="md"
                   maxW={24}
-                  defaultValue={1}
+                  defaultValue={producto.cantidad}
                   onChange={handleChange1}
                 >
                   <NumberInputField />
